@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { NgFor } from '@angular/common'; //es necesario en este caso importar NgFor
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from '@openng/ngx-toastr';
+import { Tarjeta } from '../../service/tarjeta';
 @Component({
   imports: [NgFor,
     ReactiveFormsModule //formularios reactivos
@@ -17,10 +18,13 @@ export class TarjetaCredito {
   ];
 
 
-
+  private toastr = inject(ToastrService); //inyeccion mediante inject
+  private tarjetaService= inject(Tarjeta);//inyeccion mediante inject
+  
   form: FormGroup; //agruparemos una serie de elementos ya que el formulario tiene varios elementos
 
-  constructor(private fb: FormBuilder) { //creamos una inyeccion de dependencias
+  constructor(private fb: FormBuilder,   
+  ) { //creamos una inyeccion por constructor de dependencias
     this.form = this.fb.group(
       {
         titulo: ["", Validators.required],
@@ -32,11 +36,10 @@ export class TarjetaCredito {
 
     )
   }
+  
 
-  private toastr = inject(ToastrService);
-
+  // private toastr = inject(ToastrService);
   agregarTarjeta() {
-
     const tarjeta: any = {
       //tenemos que obtener los datos del formulario
       titulo: this.form.get("titulo")?.value,
@@ -72,6 +75,18 @@ export class TarjetaCredito {
     );
   }
 
+  obtenerTarjetas() {
+    this.tarjetaService.getListadoTarjetas().subscribe(data => {
+      console.log(data);
+    }, error => {
+      console.log(error);
+    }
+    )
+  }
 
+
+  ngOnInit(): void {
+    this.obtenerTarjetas();
+  }
 
 }

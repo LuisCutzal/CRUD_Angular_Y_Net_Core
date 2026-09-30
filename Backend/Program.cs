@@ -16,6 +16,26 @@ namespace Backend
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
+            builder.Services.AddCors(options => options.AddPolicy("AllowWebApp",
+                builder => builder.AllowAnyOrigin() //Permitir peticiones desde cualquier origen.
+                .AllowAnyHeader() //permite cualquier encabezado HTTP que envíe el frontend.
+                .AllowAnyMethod())); //Permite cualquier método HTTP:
+            //esto se usa porque el front y el back estan en origenes diferentes
+
+            /*
+                     builder.Services.AddCors(options =>
+                {
+                    options.AddPolicy("AllowWebApp", policy =>
+                    {
+                        policy
+                            .WithOrigins("https://mi-frontend.com")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+                });
+
+            //Así solamente ese frontend está autorizado.
+             */
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -28,6 +48,8 @@ namespace Backend
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("AllowWebApp"); //Utiliza la política AllowWebApp para las peticiones que lleguen a este servidor.
 
             app.UseHttpsRedirection();
 
