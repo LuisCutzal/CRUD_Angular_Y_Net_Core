@@ -34,7 +34,7 @@ export class TarjetaCredito {
   }
 
   private toastr = inject(ToastrService);
-  
+
   agregarTarjeta() {
 
     const tarjeta: any = {
@@ -58,9 +58,18 @@ export class TarjetaCredito {
 
     //luego reseteamos el formulario esto con el fin de poner los campos del formulario en blanco
     this.form.reset();
+  }
 
-
-    
+  eliminarTarjeta(index: number) {
+    //console.log(index);
+    this.listarTarjetas.splice(index, 1);
+    //splice() permite eliminar desde una posición específica, necesita parametros: que elemento queremos remover y la cantidad de elementos
+    //no usamos pop porque siempre elimina el último elemento.
+    //no usamos shift porque siempre elimina el primer elemento
+    this.toastr.error(
+      'La tarjeta fue eliminada con exito',
+      'Tarjeta eliminada'
+    );
   }
 
 

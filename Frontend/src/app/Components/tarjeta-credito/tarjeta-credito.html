@@ -86,7 +86,10 @@
                     <table class="table">
                         <tbody>
                             <!-- aqui se utilizara la lista listarTarjetas que esta en tarjeta-credito.ts -->
-                            <tr *ngFor="let tarjeta of listarTarjetas">
+                            <tr *ngFor="let tarjeta of listarTarjetas; let i = index">
+                                <!-- como aun no estamos usando la BD, colocar let i = index puede funcionar -->
+                                <!-- Angular tiene una variable especial llamada index 
+                                    el cual que representa la posición actual del elemento dentro del arreglo -->
                                 <td>{{tarjeta.titulo}}</td>
                                 <td>{{tarjeta.numeroTarjeta}}</td>
                                 <td>{{tarjeta.fechaExpiracion}}</td>
@@ -94,7 +97,9 @@
                                     <i class="far fa-solid fa-pen-to-square text-info"></i>
                                 </td>
                                 <td>
-                                    <i class="far fa-notdog-duo fa-solid fa-trash text-danger"></i>
+                                    <i (click)="eliminarTarjeta(i)" class="far fa-notdog-duo fa-solid fa-trash text-danger"></i>
+                                <!-- se utiliza la i en la funcion eliminarTarjeta -> eliminarTarjeta(i) del archivo tarjeta-credito.ts
+                                esto porque aun no estamos utilizando una BD -->
                                 </td>
                             </tr>
                         </tbody>
