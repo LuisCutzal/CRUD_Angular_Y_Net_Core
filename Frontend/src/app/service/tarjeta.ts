@@ -10,7 +10,7 @@ export class Tarjeta {
     // comunicacion de datos entre componentes
     private http = inject(HttpClient);
 
-    private myAppURL = "https://localhost:7156/";
+    private myAppURL = "http://localhost:5247/";
     private myAPIURL = "api/Tarjeta/";
 
 
@@ -22,5 +22,10 @@ export class Tarjeta {
     deleteTarjeta(id: number): Observable<any> {
         return this.http.delete(this.myAppURL + this.myAPIURL + id); //devuelve un observable en formato json
 
+    }
+
+
+    saveTarjeta(tarjeta:any): Observable<any>{
+        return this.http.post(this.myAppURL + this.myAPIURL, tarjeta);
     }
 }

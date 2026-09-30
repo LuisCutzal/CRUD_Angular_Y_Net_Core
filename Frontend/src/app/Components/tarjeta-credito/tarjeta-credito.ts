@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NgFor } from '@angular/common'; //es necesario en este caso importar NgFor
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from '@openng/ngx-toastr';
@@ -11,7 +11,7 @@ import { Tarjeta } from '../../service/tarjeta';
   styleUrl: './tarjeta-credito.css',
   templateUrl: './tarjeta-credito.html',
 })
-export class TarjetaCredito {
+export class TarjetaCredito implements OnInit {
   // listarTarjetas: any[] = [ //esta es una lista de las tarjetas utilizada en tarjeta-credito.html
   //   { titulo: "Lucas Gonzales", numeroTarjeta: "123456789", fechaExpiracion: "09/2026", CVV: "123" },
   //   { titulo: "Juan Lopez", numeroTarjeta: "9876554721", fechaExpiracion: "09/2028", CVV: "555" }
@@ -53,32 +53,41 @@ export class TarjetaCredito {
 
     //ahora agregaremos la tarjeta en el listado de tarjeta
 
-    this.listarTarjetas.push(tarjeta);
-    this.toastr.success(
-      'La tarjeta se agregó correctamente',
-      'Tarjeta registrada con exito'
-    );
+    //this.listarTarjetas.push(tarjeta);
+    this.tarjetaService.saveTarjeta(tarjeta).subscribe(data => {
+      this.toastr.success(
+        'La tarjeta se agregó correctamente',
+        'Tarjeta registrada con exito'
+      );
+      //luego reseteamos el formulario esto con el fin de poner los campos del formulario en blanco
+      this.obtenerTarjetas();
+      this.form.reset();
+    }, error => {
+      console.log(error);
+    }
+    )
+
     //esto recibe un mensaje y un titulo
 
-    //luego reseteamos el formulario esto con el fin de poner los campos del formulario en blanco
-    this.form.reset();
+
   }
 
   eliminarTarjeta(index: number) {
-    //console.log(index);
-    this.listarTarjetas.splice(index, 1);
-    //splice() permite eliminar desde una posición específica, necesita parametros: que elemento queremos remover y la cantidad de elementos
-    //no usamos pop porque siempre elimina el último elemento.
-    //no usamos shift porque siempre elimina el primer elemento
-    this.toastr.error(
-      'La tarjeta fue eliminada con exito',
-      'Tarjeta eliminada'
-    );
+    // //console.log(index);
+    // this.listarTarjetas.splice(index, 1);
+    // //splice() permite eliminar desde una posición específica, necesita parametros: que elemento queremos remover y la cantidad de elementos
+    // //no usamos pop porque siempre elimina el último elemento.
+    // //no usamos shift porque siempre elimina el primer elemento
+    // this.toastr.error(
+    //   'La tarjeta fue eliminada con exito',
+    //   'Tarjeta eliminada'
+    // );
 
     this.tarjetaService.deleteTarjeta(index).subscribe(data => {
       this.toastr.error(
         'La tarjeta fue eliminada con exito',
         'Tarjeta eliminada');
+      this.obtenerTarjetas();
     }, error => {
       console.log(error);
     }
@@ -86,17 +95,17 @@ export class TarjetaCredito {
   }
 
   obtenerTarjetas() {
+    console.log('Antes del GET');
+
     this.tarjetaService.getListadoTarjetas().subscribe(data => {
-      console.log(data);
+      console.log('Datos recibidos:', data);
       this.listarTarjetas = data;
-    }, error => {
-      console.log(error);
-    }
-    )
+      console.log('Datos asignados:', this.listarTarjetas);
+    });
   }
 
-
   ngOnInit(): void {
+    console.log('Componente iniciado');
     this.obtenerTarjetas();
   }
 
