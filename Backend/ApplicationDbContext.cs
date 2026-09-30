@@ -7,7 +7,7 @@ namespace Backend
     {
         //debemos de poder mapear nuestro modelo con las tablas de la bd
 
-        DbSet<TarjetaCredito> TarjetaCredito { get; set; }
+        public DbSet<TarjetaCredito> TarjetaCredito { get; set; }
             //nombre de la bd que estamos utilizando
 
         //nuestra clase debe heredar de DbContext para poder trabajar con sql
