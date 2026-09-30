@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgFor } from '@angular/common'; //es necesario en este caso importar NgFor
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastrService } from '@openng/ngx-toastr';
 @Component({
   imports: [NgFor,
     ReactiveFormsModule //formularios reactivos
@@ -14,6 +15,8 @@ export class TarjetaCredito {
     { titulo: "Lucas Gonzales", numeroTarjeta: "123456789", fechaExpiracion: "09/2026", CVV: "123" },
     { titulo: "Juan Lopez", numeroTarjeta: "9876554721", fechaExpiracion: "09/2028", CVV: "555" }
   ];
+
+
 
   form: FormGroup; //agruparemos una serie de elementos ya que el formulario tiene varios elementos
 
@@ -29,6 +32,9 @@ export class TarjetaCredito {
 
     )
   }
+
+  private toastr = inject(ToastrService);
+  
   agregarTarjeta() {
 
     const tarjeta: any = {
@@ -44,8 +50,19 @@ export class TarjetaCredito {
     //ahora agregaremos la tarjeta en el listado de tarjeta
 
     this.listarTarjetas.push(tarjeta);
+    this.toastr.success(
+      'La tarjeta se agregó correctamente',
+      'Tarjeta registrada con exito'
+    );
+    //esto recibe un mensaje y un titulo
 
     //luego reseteamos el formulario esto con el fin de poner los campos del formulario en blanco
     this.form.reset();
+
+
+    
   }
+
+
+
 }
