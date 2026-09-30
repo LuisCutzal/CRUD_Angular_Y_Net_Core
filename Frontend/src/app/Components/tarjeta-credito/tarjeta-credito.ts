@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common'; //es necesario en este caso importar NgFor
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 @Component({
   imports: [NgFor,
     ReactiveFormsModule //formularios reactivos
@@ -20,10 +20,11 @@ export class TarjetaCredito {
   constructor(private fb: FormBuilder) { //creamos una inyeccion de dependencias
     this.form = this.fb.group(
       {
-        titulo: [""],
-        numeroTarjeta: [""],
-        fechaExpiracion: [""],
-        cvv: [""]
+        titulo: ["", Validators.required],
+        numeroTarjeta: ["", [Validators.required, Validators.maxLength(16), Validators.minLength(16)]],
+        //cuando colocamos varias validaciones, es necesario colocarlo como un array
+        fechaExpiracion: ["", [Validators.required, Validators.maxLength(5), Validators.minLength(5)]],
+        cvv: ["", [Validators.required, Validators.maxLength(3), Validators.minLength(3)]]
       }
 
     )
