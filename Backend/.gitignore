@@ -1,0 +1,31 @@
+# Compilación de .NET
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Archivos de usuario de Visual Studio
+*.user
+*.suo
+
+# Rider / JetBrains
+.idea/
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Logs
+*.log
+
+# Variables de entorno
+.env
+.env.*
+
+# Configuración local de desarrollo
+appsettings.Development.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
