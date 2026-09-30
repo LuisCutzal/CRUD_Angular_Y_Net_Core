@@ -78,7 +78,7 @@
             </div>
 
         </div>
-        <div class="col lg-6">
+        <div class="col-lg-6">
             <!-- para listar las tarjetas de credito -->
             <div class="card">
                 <div class="card-body">
@@ -97,7 +97,7 @@
                                     <i class="far fa-solid fa-pen-to-square text-info"></i>
                                 </td>
                                 <td>
-                                    <i (click)="eliminarTarjeta(i)" class="far fa-notdog-duo fa-solid fa-trash text-danger"></i>
+                                    <i (click)="eliminarTarjeta(tarjeta.id)" class="far fa-notdog-duo fa-solid fa-trash text-danger"></i>
                                 <!-- se utiliza la i en la funcion eliminarTarjeta -> eliminarTarjeta(i) del archivo tarjeta-credito.ts
                                 esto porque aun no estamos utilizando una BD -->
                                 </td>

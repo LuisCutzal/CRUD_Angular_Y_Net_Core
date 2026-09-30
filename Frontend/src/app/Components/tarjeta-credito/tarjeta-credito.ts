@@ -12,18 +12,20 @@ import { Tarjeta } from '../../service/tarjeta';
   templateUrl: './tarjeta-credito.html',
 })
 export class TarjetaCredito {
-  listarTarjetas: any[] = [ //esta es una lista de las tarjetas utilizada en tarjeta-credito.html
-    { titulo: "Lucas Gonzales", numeroTarjeta: "123456789", fechaExpiracion: "09/2026", CVV: "123" },
-    { titulo: "Juan Lopez", numeroTarjeta: "9876554721", fechaExpiracion: "09/2028", CVV: "555" }
-  ];
+  // listarTarjetas: any[] = [ //esta es una lista de las tarjetas utilizada en tarjeta-credito.html
+  //   { titulo: "Lucas Gonzales", numeroTarjeta: "123456789", fechaExpiracion: "09/2026", CVV: "123" },
+  //   { titulo: "Juan Lopez", numeroTarjeta: "9876554721", fechaExpiracion: "09/2028", CVV: "555" }
+  // ];
+
+  listarTarjetas: any[] = [];
 
 
   private toastr = inject(ToastrService); //inyeccion mediante inject
-  private tarjetaService= inject(Tarjeta);//inyeccion mediante inject
-  
+  private tarjetaService = inject(Tarjeta);//inyeccion mediante inject
+
   form: FormGroup; //agruparemos una serie de elementos ya que el formulario tiene varios elementos
 
-  constructor(private fb: FormBuilder,   
+  constructor(private fb: FormBuilder,
   ) { //creamos una inyeccion por constructor de dependencias
     this.form = this.fb.group(
       {
@@ -36,7 +38,6 @@ export class TarjetaCredito {
 
     )
   }
-  
 
   // private toastr = inject(ToastrService);
   agregarTarjeta() {
@@ -73,11 +74,21 @@ export class TarjetaCredito {
       'La tarjeta fue eliminada con exito',
       'Tarjeta eliminada'
     );
+
+    this.tarjetaService.deleteTarjeta(index).subscribe(data => {
+      this.toastr.error(
+        'La tarjeta fue eliminada con exito',
+        'Tarjeta eliminada');
+    }, error => {
+      console.log(error);
+    }
+    )
   }
 
   obtenerTarjetas() {
     this.tarjetaService.getListadoTarjetas().subscribe(data => {
       console.log(data);
+      this.listarTarjetas = data;
     }, error => {
       console.log(error);
     }
