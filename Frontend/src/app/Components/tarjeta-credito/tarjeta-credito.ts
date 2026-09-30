@@ -8,7 +8,7 @@ import { NgFor } from '@angular/common'; //es necesario en este caso importar Ng
 })
 export class TarjetaCredito {
   listarTarjetas: any[] = [ //esta es una lista de las tarjetas utilizada en tarjeta-credito.html
-    {titulo:"Lucas Gonzales", numeroTarjeta:"123456789", fechaExpiracion: "29/09/2026", CVV: "123"},
-    {titulo:"Juan Lopez", numeroTarjeta:"9876554721", fechaExpiracion: "10/09/2028", CVV: "555"}
+    {titulo:"Lucas Gonzales", numeroTarjeta:"123456789", fechaExpiracion: "09/2026", CVV: "123"},
+    {titulo:"Juan Lopez", numeroTarjeta:"9876554721", fechaExpiracion: "09/2028", CVV: "555"}
   ];
 }
