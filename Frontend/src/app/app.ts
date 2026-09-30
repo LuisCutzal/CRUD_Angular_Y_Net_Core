@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+// import { RouterOutlet } from '@angular/router';
 import { TarjetaCredito } from './Components/tarjeta-credito/tarjeta-credito';
 @Component({
-  imports: [RouterOutlet,TarjetaCredito],
+  // imports: [RouterOutlet,TarjetaCredito],
+  imports: [TarjetaCredito],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
