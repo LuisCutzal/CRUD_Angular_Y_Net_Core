@@ -13,7 +13,7 @@
             <!-- esto es para el formulario -->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="titulo">Agregar Tarjeta</h5>
+                    <h5 class="titulo">{{ accion | uppercase }} TARJETA</h5>
 
                     <form [formGroup]="form" (ngSubmit)="agregarTarjeta()">
                         <!-- el nombre "form" debe de ser igual a la variable que tenemos en tarjeta-creditos.ts (form: FormGroup;) -->
@@ -94,7 +94,7 @@
                                 <td>{{tarjeta.numeroTarjeta}}</td>
                                 <td>{{tarjeta.fechaExpiracion}}</td>
                                 <td>
-                                    <i class="far fa-solid fa-pen-to-square text-info"></i>
+                                    <i (click)="editarTarjeta(tarjeta)" class="far fa-solid fa-pen-to-square text-info"></i>
                                 </td>
                                 <td>
                                     <i (click)="eliminarTarjeta(tarjeta.id)" class="far fa-notdog-duo fa-solid fa-trash text-danger"></i>

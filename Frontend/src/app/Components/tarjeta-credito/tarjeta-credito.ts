@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NgFor } from '@angular/common'; //es necesario en este caso importar NgFor
+import { NgFor, UpperCasePipe } from '@angular/common'; //es necesario en este caso importar NgFor
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from '@openng/ngx-toastr';
 import { Tarjeta } from '../../service/tarjeta';
 @Component({
   imports: [NgFor,
-    ReactiveFormsModule //formularios reactivos
+    ReactiveFormsModule, //formularios reactivos
+    UpperCasePipe
   ], //en imports tambien es necesario utilizarlo
   selector: 'app-tarjeta-credito', //este es el nombre que debemos de colocar para que renderice
   styleUrl: './tarjeta-credito.css',
@@ -18,7 +19,8 @@ export class TarjetaCredito implements OnInit {
   // ];
 
   listarTarjetas: any[] = [];
-
+  accion = "Agregar";
+  id: number | undefined;
 
   private toastr = inject(ToastrService); //inyeccion mediante inject
   private tarjetaService = inject(Tarjeta);//inyeccion mediante inject
@@ -49,23 +51,38 @@ export class TarjetaCredito implements OnInit {
       fechaExpiracion: this.form.get("fechaExpiracion")?.value,
       cvv: this.form.get("cvv")?.value,
     }
-    console.log(tarjeta);
+    //console.log(tarjeta);
 
-    //ahora agregaremos la tarjeta en el listado de tarjeta
+    if (this.id == undefined) {
 
-    //this.listarTarjetas.push(tarjeta);
-    this.tarjetaService.saveTarjeta(tarjeta).subscribe(data => {
-      this.toastr.success(
-        'La tarjeta se agregó correctamente',
-        'Tarjeta registrada con exito'
-      );
-      //luego reseteamos el formulario esto con el fin de poner los campos del formulario en blanco
-      this.obtenerTarjetas();
-      this.form.reset();
-    }, error => {
-      console.log(error);
+      //ahora agregaremos la tarjeta en el listado de tarjeta
+
+      //this.listarTarjetas.push(tarjeta);
+      this.tarjetaService.saveTarjeta(tarjeta).subscribe(data => {
+        this.toastr.success(
+          'La tarjeta se agregó correctamente',
+          'Tarjeta registrada con exito'
+        );
+        //luego reseteamos el formulario esto con el fin de poner los campos del formulario en blanco
+        this.obtenerTarjetas();
+        this.form.reset();
+      }, error => {
+        console.log(error);
+      }
+      )
+    } else {
+      this.tarjetaService.updateTarjeta(this.id, tarjeta).subscribe(data => {
+        this.form.reset();
+        this.accion = "agregar";
+        this.id = undefined;
+        this.toastr.info("La tarejta fue actualizada con exito", "Tarjeta actualizada");
+        this.obtenerTarjetas();
+      }, error => {
+        console.log(error);
+      }
+      )
     }
-    )
+
 
     //esto recibe un mensaje y un titulo
 
@@ -95,17 +112,27 @@ export class TarjetaCredito implements OnInit {
   }
 
   obtenerTarjetas() {
-    console.log('Antes del GET');
 
     this.tarjetaService.getListadoTarjetas().subscribe(data => {
-      console.log('Datos recibidos:', data);
       this.listarTarjetas = data;
-      console.log('Datos asignados:', this.listarTarjetas);
     });
   }
 
+  editarTarjeta(tarjeta: any) {
+    // console.log(tarjeta)
+    this.accion = "editar";
+    this.id = tarjeta.id;
+    this.form.patchValue(
+      {
+        titulo: tarjeta.titulo,
+        numeroTarjeta: tarjeta.numeroTarjeta,
+        fechaExpiracion: tarjeta.fechaExpiracion,
+        cvv: tarjeta.cvv
+      }
+    );
+  }
+
   ngOnInit(): void {
-    console.log('Componente iniciado');
     this.obtenerTarjetas();
   }
 
