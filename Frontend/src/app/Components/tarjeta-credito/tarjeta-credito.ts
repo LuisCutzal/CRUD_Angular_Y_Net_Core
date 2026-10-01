@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit,signal  } from '@angular/core';
 import { NgFor, UpperCasePipe } from '@angular/common'; //es necesario en este caso importar NgFor
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from '@openng/ngx-toastr';
@@ -18,7 +18,7 @@ export class TarjetaCredito implements OnInit {
   //   { titulo: "Juan Lopez", numeroTarjeta: "9876554721", fechaExpiracion: "09/2028", CVV: "555" }
   // ];
 
-  listarTarjetas: any[] = [];
+  listarTarjetas = signal<any[]>([]);
   accion = "Agregar";
   id: number | undefined;
 
@@ -114,7 +114,7 @@ export class TarjetaCredito implements OnInit {
   obtenerTarjetas() {
 
     this.tarjetaService.getListadoTarjetas().subscribe(data => {
-      this.listarTarjetas = data;
+      this.listarTarjetas.set(data);
     });
   }
 
